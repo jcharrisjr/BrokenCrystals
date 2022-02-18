@@ -3,14 +3,12 @@ name: CI
 on:
   push:
     branches:
-      - crawler
-      - har-file
-      - swagger
-      - brokencrystals
+    - crawler
+    - har-file
+    - swagger
+    - brokencrystals
   pull_request:
-    branches: [main]
-  schedule:
-    - cron: "0 0 * * THU"
+    branches: [ main ]
 
 jobs:
   start_and_wait_scan:
@@ -33,15 +31,14 @@ jobs:
         run: |
           sudo docker-compose --env-file=.env up -d
           sudo docker-compose config
-      - run: sleep 30s
-      - run: sudo docker-compose logs
+      - run: sleep 10s
       - name: Start Nexploit Scan 🏁
         id: start
         run: |
           SCAN_ID=$(nexploit-cli scan:run                                                 \
-            --test csrf dom_xss header_security secret_tokens open_buckets                 \
-            --name "💎 BrokenCrystals for a '${GITHUB_REF##*/}' branch #${GITHUB_RUN_NUMBER}" \
-            --crawler https://brokencrystals.com/api/config https://brokencrystals.com/  \
+            --test dom_xss xss default_login_location header_security secret_tokens directory_listing full_path_disclosure                            \
+            --name "💠 BrokenCrystal 💠 Scan for a '${GITHUB_REF##*/}' branch #${GITHUB_RUN_NUMBER}" \
+            --crawler "https://brokencrystals.com"                                         \
             --integration "github:example-actions"                                         \
             --repeater ${{ secrets.REPEATER }}                                           \
             --project ${{ secrets.NEXPLOIT_PROJECT }}                                    \
