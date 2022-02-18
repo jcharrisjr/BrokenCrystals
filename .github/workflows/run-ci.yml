@@ -43,6 +43,7 @@ jobs:
             --name "💎 BrokenCrystals for a '${GITHUB_REF##*/}' branch #${GITHUB_RUN_NUMBER}" \
             --crawler https://brokencrystals.com/api/config https://brokencrystals.com/  \
             --repeater ${{ secrets.REPEATER }}                                            \
+            --project ${{ secrets.NEXPLOIT_PROJECT }} \
             --token ${{ secrets.NEXPLOIT_TOKEN }})
           echo "SCAN_ID=$SCAN_ID" >> $GITHUB_ENV
       - name: Get the output scan url 🔗
@@ -54,7 +55,6 @@ jobs:
             --interval 30s                        \
             --timeout 10m                         \
             --token ${{ secrets.NEXPLOIT_TOKEN }} \
-            --project ${{ secrets.NEXPLOIT_PROJECT }} \
             --breakpoint high_issue $SCAN_ID
       - name: Stop Scan 🛑
         continue-on-error: true
