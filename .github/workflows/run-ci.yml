@@ -6,7 +6,6 @@ on:
     - crawler
     - har-file
     - swagger
-    - brokencrystals
   pull_request:
     branches: [ main ]
 
