@@ -6,4 +6,3 @@
 4. Go to Nexploit app and check if a scan started.
 
 jharris - TEST 37
-
