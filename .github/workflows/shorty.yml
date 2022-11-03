@@ -42,7 +42,7 @@ jobs:
             --integration "github:BrokenCrystals"                                         \
             --project ${{ secrets.NEXPLOIT_PROJECT }}                                       \
             --token ${{ secrets.NEXPLOIT_TOKEN }})                                          \
-            --cluster "demo.neuralegion.com"
+            --cluster 'https://demo.neuralegion.com'
           echo "SCAN_ID=$SCAN_ID" >> $GITHUB_ENV
       - name: Get the output scan url 🔗
         run: |
