@@ -35,25 +35,14 @@ jobs:
       - name: Start Nexploit Scan 🏁
         id: start
         run: |
-          SCAN_ID=$(nexploit-cli scan:run                                                 \
-            --test dom_xss xss default_login_location header_security secret_tokens directory_listing full_path_disclosure                            \
-            --name "💠 BrokenCrystal 💠 Scan for a '${GITHUB_REF##*/}' branch #${GITHUB_RUN_NUMBER}" \
-            --crawler "https://brokencrystals.com"                                         \
-            --integration "github:BrokenCrystals"                                         \
-            --project ${{ secrets.NEXPLOIT_PROJECT }}                                       \
-            --token ${{ secrets.NEXPLOIT_TOKEN }})
+          SCAN_ID=$(nexploit-cli scan:run --test dom_xss xss default_login_location header_security secret_tokens directory_listing full_path_disclosure  \
+          --name "💠 BrokenCrystal 💠 Scan for a '${GITHUB_REF##*/}' branch #${GITHUB_RUN_NUMBER}" \
+          --crawler "https://brokencrystals.com" \
+          --project ${{ secrets.NEXPLOIT_PROJECT }} \
+          --token ${{ secrets.NEXPLOIT_TOKEN }} \
+          --cluster "https://demo.neuralegion.com" )
           echo "SCAN_ID=$SCAN_ID" >> $GITHUB_ENV
       - name: Get the output scan url 🔗
         run: |
           printf "Scan was started with ID https://nexploit.app/scans/$SCAN_ID"
-      - name: Wait for issues ⏳
-        run: |
-          nexploit-cli scan:polling               \
-            --interval 30s                        \
-            --timeout 20m                         \
-            --token ${{ secrets.NEXPLOIT_TOKEN }} \
-            --breakpoint high_issue $SCAN_ID
-      - name: Stop Scan 🛑
-        continue-on-error: true
-        if: ${{ always() }}
-        run: nexploit-cli scan:stop --token ${{ secrets.NEXPLOIT_TOKEN }} $SCAN_ID
+
